@@ -2,8 +2,8 @@
 ------
 ### Roster:
 1. (PM)Joseph Wu:
-2. Nakib Abedin:
-3. David Chen:
+2. Jeremy Kwok:
+3. Aahan Mehta:
 
 ### Project Description:
 
