@@ -12,7 +12,9 @@
 ### API Key Cards:
 
 ### Launch Codes:
-1. ``` git clone ```
-2. ``` cd  ```
-3. ``` python3 app/__init.py___ ```
-4. Click on the localhost
+1. ``` git clone git@github.com:WazzaPd/P5-Jabberers_Archive.git JumpKing```
+2. ``` cd JumpKing ```
+3. ``` Create and activate your own venv (or not)```
+4. ``` pip install -r requirements.txt ```
+5. ``` python3 app/__init.py___ ```
+6. Click on the localhost

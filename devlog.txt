@@ -22,6 +22,7 @@ fristL -- TIMESTAMP
 --------------------------------------------------------------
 
 JosephW -- 2023-06-03 20:03
+- Plan: Game will be run on a flask website
 - Set up necessary directory structure
 - !!! Using Pyglet python library for Game Development
 - created inital page, index.html
