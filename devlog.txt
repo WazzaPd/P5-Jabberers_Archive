@@ -1,0 +1,33 @@
+Jabberers Archive
+Joseph Wu
+Aahan Mehta
+Jeremy Kwok
+pd 8
+---------------------
+
+
+
+ ______   ______   __   __   __       ______   _______     
+/_____/\ /_____/\ /_/\ /_/\ /_/\     /_____/\ /______/\    
+\:::_ \ \\::::_\/_\:\ \\ \ \\:\ \    \:::_ \ \\::::__\/__  
+ \:\ \ \ \\:\/___/\\:\ \\ \ \\:\ \    \:\ \ \ \\:\ /____/\ 
+  \:\ \ \ \\::___\/_\:\_/.:\ \\:\ \____\:\ \ \ \\:\\_  _\/ 
+   \:\/.:| |\:\____/\\ ..::/ / \:\/___/\\:\_\ \ \\:\_\ \ \ 
+    \____/_/ \_____\/ \___/_(   \_____\/ \_____\/ \_____\/ 
+==============================================================
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+fristL -- TIMESTAMP
+--------------------------------------------------------------
+
+JosephW -- 2023-06-03 20:03
+- Set up necessary directory structure
+- !!! Using Pyglet python library for Game Development
+- created inital page, index.html
+    - currently houses canvas element to run Pyglet application
+        - Set to be moved to Game page
+    - Home page
+- Set up __init__.py
+    - create tables.db
+    - route to index.html
