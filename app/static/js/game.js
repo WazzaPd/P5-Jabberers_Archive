@@ -2,8 +2,8 @@ const viewWidth = 500;
 const viewHeight = 500;
 const mapWidth = 1500;
 const mapHeight = 3000;
-const scaleRatioX = 0.1 //viewWidth / mapWidth;
-const scaleRatioY = 0.1 //viewHeight / mapHeight;
+const scaleRatioX = 0.1; //viewWidth / mapWidth;
+const scaleRatioY = 0.1; //viewHeight / mapHeight;
 let islandsGroup;
 
 var config = {
@@ -18,8 +18,8 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: { 
-            gravity: { y: 1000 }, // Set the gravity value as needed
-            debug: true // Set to true if you want to show physics bodies
+            gravity: { y: 1000 }, // Set the gravity value
+            debug: true // Set to true to show physics bodies
         }
     },
     scene: {
@@ -48,21 +48,14 @@ function create() {
     //Create islandsGroup
     islandsGroup = this.physics.add.staticGroup();
 
-    
     //Create floating islands
     const islands = generateIslands();
     islands.forEach((island) => {
         createIsland(island.x, island.y, island.width, 32);
-        //const islandSprite = this.add.sprite(island.x, island.y, "ground");
-        //islandSprite.setScale(island.width/islandSprite.width, island.height/islandSprite.height);
     });
 
-    /*
-    islands = this.physics.add.staticGroup();
-    islands.create(700, 2800, "ground");
-    islands.create(1300, 2600, "ground");
-    islands.create(800, 2200, "ground");
-    */
+    var firstIsland = islandsGroup.create(mapWidth/2, mapHeight-32, "ground");
+    firstIsland.setSize(150, 42);
 
     //create goal
     goal = this.physics.add.sprite(900,1800, "goal");
@@ -131,12 +124,12 @@ function generateIslands() {
     const islands = [];
 
     var islandX;
-    var islandY = mapHeight - 32;
-    let lastIslandX = 0;
+    var islandY;
+    let lastIslandX = mapWidth/2;
     let lastIslandY = mapHeight - 32;
     const maxGap = 500;
     const minGap = 200;
-    var islandWidth
+    var islandWidth;
     var lastIslandWidth = 150;
 
     while (lastIslandY > 0){
@@ -148,7 +141,7 @@ function generateIslands() {
 
         //keep islandX within map bounds
         islandX = lastIslandX + (fiftyChance * (lastIslandWidth + gap));
-        while (islandX < 0 || islandX > mapWidth){
+        while (islandX < 0 || islandX + islandWidth > mapWidth){
             islandX = lastIslandX + (fiftyChance * (lastIslandWidth + gap));
         }
 
