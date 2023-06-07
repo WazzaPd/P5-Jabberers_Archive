@@ -48,19 +48,19 @@ function create() {
     //Create islandsGroup
     islandsGroup = this.physics.add.staticGroup();
 
+    //Create first floating island
+    var firstIsland = islandsGroup.create(mapWidth/2, mapHeight-32, "ground");
+    firstIsland.setSize(150, 42);
+
     //Create floating islands
     const islands = generateIslands();
     islands.forEach((island) => {
         createIsland(island.x, island.y, island.width, 32);
     });
 
-    var firstIsland = islandsGroup.create(mapWidth/2, mapHeight-32, "ground");
-    firstIsland.setSize(150, 42);
-
     //create goal
     goal = this.physics.add.sprite(900,1800, "goal");
     goal.setScale(0.2,0.2);
-    this.physics.add.collider(goal, islandsGroup);
 
     //Create kirby
     kirby = this.physics.add.sprite(mapWidth/2, 2700, "kirby");
@@ -75,8 +75,9 @@ function create() {
     //Enable cursor keys for kirby movement
     cursors = this.input.keyboard.createCursorKeys();
 
-    //Let kirby crash into the wall
+    //Let colliders
     this.physics.add.collider(kirby, islandsGroup);
+    this.physics.add.collider(goal, islandsGroup);
 
     //this.cameras.main.setOrigin(this.sys.game.config.width/2, 2700)
     this.cameras.main.setBounds(0, 0, mapWidth, mapHeight);
@@ -121,7 +122,7 @@ function update() {
 }
 
 function generateIslands() {
-    const islands = [];
+    var islands = [];
 
     var islandX;
     var islandY;
