@@ -4,4 +4,13 @@
     align-items: center;
     text-align: center;
     min-height: 100vh;
-  }
+}
+
+.scaled-down {
+    transform: scale(0.3);
+    transform-origin: 50% 0; /* Set the scaling origin to top-left */
+}
+
+body {
+    overflow: hidden; /* Hide any overflow beyond the viewport */
+}
