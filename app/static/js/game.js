@@ -146,7 +146,7 @@ function generateIslands() {
             islandX = lastIslandX + (fiftyChance * (lastIslandWidth + gap));
         }
 
-        islandY = lastIslandY - Math.floor(Math.random() * 200 + 100);
+        islandY = lastIslandY - (Math.floor((Math.random() * 200) + 100));
 
         //push values to constructor
         islands.push({
