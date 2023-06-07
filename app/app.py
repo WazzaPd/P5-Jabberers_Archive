@@ -32,11 +32,11 @@ c.execute(
 db.commit()  # save changes
 #-------------------------DataBase-------------------------
 
-@app.route('/')
+@app.route('/',)
 def index():
     return render_template('index.html')
 
-@app.route('/game')
+@app.route('/game',  methods = ["POST"])
 def game():
     return render_template('game.html')
 
