@@ -136,7 +136,6 @@ function generateIslands() {
     let lastIslandY = mapHeight - 32;
     const maxGap = 500;
     const minGap = 200;
-    var currentHeight = mapHeight;
     var islandWidth
     var lastIslandWidth = 150;
 
