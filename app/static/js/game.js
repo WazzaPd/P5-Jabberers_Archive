@@ -1,10 +1,19 @@
 const viewWidth = 500;
 const viewHeight = 500;
-const mapWidth = 1500;
-const mapHeight = 3000;
-const scaleRatioX = 0.1; //viewWidth / mapWidth;
-const scaleRatioY = 0.1; //viewHeight / mapHeight;
-let islandsGroup;
+const mapWidth = 3000;
+let mapHeight = 3000;
+const scaleRatioX = 0.5; //viewWidth / mapWidth;
+const scaleRatioY = 0.5; //viewHeight / mapHeight;
+var currentLevel = 1; //note current level
+
+let islandsGroup; //group of islands
+
+//For positioning the goal
+var topIslandX;
+var topIslandY;
+var topIslandWidth;
+
+var levelLabelGroup;
 
 var config = {
     type: Phaser.AUTO,
@@ -19,10 +28,11 @@ var config = {
         default: 'arcade',
         arcade: { 
             gravity: { y: 1000 }, // Set the gravity value
-            debug: true // Set to true to show physics bodies
+            debug: false // Set to true to show physics bodies
         }
     },
     scene: {
+        key: 'scene',
         preload: preload,
         create: create,
         update: update
@@ -49,21 +59,28 @@ function create() {
     islandsGroup = this.physics.add.staticGroup();
 
     //Create first floating island
-    var firstIsland = islandsGroup.create(mapWidth/2, mapHeight-32, "ground");
-    firstIsland.setSize(150, 42);
+    var firstIsland = islandsGroup.create(mapWidth/2, mapHeight-50, "ground");
+    firstIsland.setSize(200, 42);
+    firstIsland.displayWidth = 200;
 
     //Create floating islands
     const islands = generateIslands();
     islands.forEach((island) => {
-        createIsland(island.x, island.y, island.width, 32);
+        if(island.y > 137){
+            createIsland(island.x, island.y, island.width, 32);
+        }
     });
 
     //create goal
-    goal = this.physics.add.sprite(900,1800, "goal");
+    console.log("topIslandX: " + topIslandX);
+    console.log("topIslandWidth: " + topIslandWidth);
+    console.log("Spawning Goal at " + (topIslandX + topIslandWidth/2 - 0.2 * 512));
+    goal = this.physics.add.sprite(topIslandX + topIslandWidth/2 - 0.2*512, 0, "goal");
+    //goal = this.physics.add.sprite(200, 0, "goal");
     goal.setScale(0.2,0.2);
 
     //Create kirby
-    kirby = this.physics.add.sprite(mapWidth/2, 2700, "kirby");
+    kirby = this.physics.add.sprite(mapWidth/2, mapHeight-200, "kirby");
     kirby.setScale(0.2,0.2);
 
     //Make bouncy kirby
@@ -77,7 +94,10 @@ function create() {
 
     //Let colliders
     this.physics.add.collider(kirby, islandsGroup);
+    this.physics.add.collider(kirby, lava);
+
     this.physics.add.collider(goal, islandsGroup);
+    this.physics.add.collider(goal, lava);
 
     //this.cameras.main.setOrigin(this.sys.game.config.width/2, 2700)
     this.cameras.main.setBounds(0, 0, mapWidth, mapHeight);
@@ -88,28 +108,52 @@ function create() {
     //Make camera focus kirby
     this.cameras.main.startFollow(kirby);
 
+    //setScrollFactor is used to make the label position absolute
+    //setOrigin to create label from top left of container
+    levelText = this.add.text(675, -250, "Level", {
+        fontSize: "48px",
+        fill: "#FFFFFF",
+        stroke: "#A117F2",
+        strokeThickness: 3
+    }).setScrollFactor(0);
+    levelText.setOrigin(0.5, 0);
+
+    var levelNumber = this.add.text(675, -200, currentLevel, {
+        fontSize: "48px",
+        fill: "#FFA500",
+        stroke: "#FF0000",
+        strokeThickness: 4
+    }).setScrollFactor(0);
+    levelNumber.setOrigin(0.5, 0);
+
 }
 
 function update() {
+
+    //Keep score label in same place
+    //console.log(levelLabelGroup.x + " " + levelLabelGroup.y);
+    //levelLabelGroup.setScrollFactor(0,0);
 
     //Kirby Freeze
     kirby.setVelocityX(0);
 
     //Kirby MOVE
     if (cursors.left.isDown){
-        kirby.setVelocityX(-250);
+        kirby.setVelocityX(-400);
     } else if (cursors.right.isDown){
-        kirby.setVelocityX(250);
+        kirby.setVelocityX(400);
     }
 
     if (cursors.up.isDown){
         if (kirby.body.touching.down){
-            kirby.setVelocityY(-1000);
+            kirby.setVelocityY(-800);
         }
     } 
 
-    //Adjust camera according to kirby's height
+
+    //Adjust camera and Level Label according to kirby's height
     this.cameras.main.scrollY = kirby.y - this.cameras.main.height/2;
+
 
     //Check if the Kirby reaches the goal
     if (Phaser.Geom.Intersects.RectangleToRectangle(kirby.getBounds(), goal.getBounds())){
@@ -125,28 +169,33 @@ function generateIslands() {
     var islands = [];
 
     var islandX;
-    var islandY;
+    var islandY = mapHeight;
     let lastIslandX = mapWidth/2;
-    let lastIslandY = mapHeight - 32;
+    let lastIslandY = mapHeight - 50;
     const maxGap = 500;
     const minGap = 200;
     var islandWidth;
     var lastIslandWidth = 150;
 
-    while (lastIslandY > 0){
+    while (islandY > 137){ //height of kirby
         //333x32
 
-        islandWidth = Math.floor(Math.random() * 200) + 50; //Random width btwn 50 and 250
+        islandWidth = Math.floor(Math.random() * 200) + 100; //Random width btwn 100 and 300
         var gap = Math.floor(Math.random() * (maxGap - minGap + 1)) + minGap;
         var fiftyChance = (Math.random() < 0.5 ? -1 : 1);
 
         //keep islandX within map bounds
         islandX = lastIslandX + (fiftyChance * (lastIslandWidth + gap));
-        while (islandX < 0 || islandX + islandWidth > mapWidth){
-            islandX = lastIslandX + (fiftyChance * (lastIslandWidth + gap));
-        }
 
-        islandY = lastIslandY - (Math.floor((Math.random() * 200) + 100));
+        if (islandX < 0){
+            islandX = lastIslandX + (lastIslandWidth + gap);
+        };
+
+        if(islandX + islandWidth > mapWidth){
+            islandX = lastIslandX - (lastIslandWidth + gap);
+        };
+
+        islandY = lastIslandY - Math.floor(Math.random() * 50 + 250);
 
         //push values to constructor
         islands.push({
@@ -156,12 +205,22 @@ function generateIslands() {
             height: 32
         });
 
+        topIslandX = lastIslandX;
+        console.log("New Top islandX: " + topIslandX);
+        //topIslandY = lastIslandY;
+        topIslandWidth = lastIslandWidth;
+        console.log("New Top islandWidth: " + topIslandWidth);
+
         //push the creation data of last island
         lastIslandX = islandX;
         lastIslandY = islandY;
         lastIslandWidth = islandWidth;
     }
     
+    //topIslandX = lastIslandX;
+    //topIslandY = lastIslandY;
+    //topIslandWidth = lastIslandWidth;
+
     return islands;
 }
 
@@ -169,13 +228,26 @@ function createIsland(x, y, width, height) {
     console.log("x: " + x + " y: " + y + " width: " + width + " height " + height);
     const island = islandsGroup.create(x, y, "ground");
     island.setSize(width, height);
+    island.displayWidth = width;
 }
 
 function winGame() {
     console.log("YOU FINALLY WON!");
+    currentLevel++;
+    //levelText.setText("Score: ")
+    console.log(currentLevel);
+    if(currentLevel % 5 == 0){
+        mapHeight = mapHeight * 2;
+    } else {
+        mapHeight = 3000;
+    }
+    game.scene.start('scene');
 }
 
 function loseGame() {
     console.log("You died. You suck!");
+    currentLevel = 1;
+    mapHeight = 3000;
+    console.log(currentLevel);
+    game.scene.start('scene');
 }
-
