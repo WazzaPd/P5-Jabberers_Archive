@@ -43,7 +43,9 @@ def index():
 
 @app.route('/game', methods = ["GET", "POST"])
 def game():
-    return render_template('game.html')
+    c.execute("SELECT * FROM leaderboard")
+    leaders=c.fetchall()
+    return render_template('game.html', leader=leaders)
 
 #-------------------------ACCOUNTS-------------------------
 def check_username(username):
@@ -183,6 +185,11 @@ def logout():
     return redirect("/")
 
 #-------------------------ACCOUNTS-------------------------
+
+def update_leaders(user, score):
+    c.execute('INSERT INTO leaderboard (username, score) VALUES (?, ?)', (user, score))
+    db.commit()
+
 
 if __name__ == "__main__":  # false if this file imported as module
     # enable debugging, auto-restarting of server when this file is modified
