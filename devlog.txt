@@ -33,18 +33,33 @@ JosephW -- 2023-06-03 20:03
     - create tables.db
     - route to index.html
 
+--------------------------------------------------------------
+
 JosephW -- 2023-06-04 20:00
 - !!!Switched from pyglet(python) to phaser(html + js)
+
+--------------------------------------------------------------
 
 JeremyK -- 2023-06-05 14:50
 - Got Kirby and Ground Sprite images (created assets folder)
 - Began coding the game in js
 
+--------------------------------------------------------------
+
 JeremyK -- 2023-06-06 11:16
 - Wrote game logic
+
+--------------------------------------------------------------
 
 JosephW -- 2023-06-07 10:42
 - Added to droplet: minji.newjeans.live
 - centered game element
 - create login logout modal
 
+--------------------------------------------------------------
+AahanM -- 2023-06-09 00:26
+
+sTyling and bootstrappin for the home page. boutta work on the 
+game page
+
+--------------------------------------------------------------
