@@ -57,9 +57,15 @@ JosephW -- 2023-06-07 10:42
 - create login logout modal
 
 --------------------------------------------------------------
+
 AahanM -- 2023-06-09 00:26
 
 sTyling and bootstrappin for the home page. boutta work on the 
 game page
 
 --------------------------------------------------------------
+
+JosephW -- 2023-06-09 14:31
+
+Setup backbone for leaderboard on game page
+    - in need of sTyling and bootstrappin

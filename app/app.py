@@ -27,8 +27,19 @@ c = db.cursor()  # facilitate db ops -- you will use cursor to trigger db events
 # two tables: users, leaderboard
 c.execute(
     "CREATE TABLE IF NOT EXISTS users(username TEXT, password TEXT)")
+
+#check if leaderboard exists or not
+c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?", ('leaderboard',))
+result = c.fetchone()
+
 c.execute(
-    "CREATE TABLE IF NOT EXISTS leaderboard(username TEXT, score TEXT)")
+    "CREATE TABLE IF NOT EXISTS leaderboard(username TEXT, score INTEGER)")
+
+#leaderboard placeholders
+if result is None:
+    for populate in range(10):
+        c.execute(f"INSERT INTO {'leaderboard'} (username, score) VALUES (NULL, NULL)")
+
 db.commit()  # save changes
 #-------------------------DataBase-------------------------
 
@@ -43,7 +54,8 @@ def index():
 
 @app.route('/game', methods = ["GET", "POST"])
 def game():
-    c.execute("SELECT * FROM leaderboard")
+    update_leaders('me', 500)
+    c.execute("SELECT * FROM leaderboard ORDER BY score DESC")
     leaders=c.fetchall()
     return render_template('game.html', leader=leaders)
 
@@ -187,8 +199,28 @@ def logout():
 #-------------------------ACCOUNTS-------------------------
 
 def update_leaders(user, score):
-    c.execute('INSERT INTO leaderboard (username, score) VALUES (?, ?)', (user, score))
-    db.commit()
+    c.execute("SELECT * FROM leaderboard")
+    leaders=c.fetchall()
+    lowest_score = leaders[0][1]
+    lowest_name = leaders[0][0]
+
+    #if placeholder just replace
+    if(lowest_score==None):
+        c.execute('DELETE FROM leaderboard WHERE username = ? LIMIT 1', (lowest_name,))
+        c.execute('INSERT INTO leaderboard (username, score) VALUES (?, ?)', (user, score))
+        return
+    #else check for lowest score
+    else:
+        for i in leaders:
+            current_name = i[0]
+            current_score = i[1]
+            if (current_score<lowest_score):
+                lowest_score = current_score
+                lowest_name = current_name
+        if (score>lowest_score):
+            c.execute('DELETE FROM leaderboard WHERE username = ? LIMIT 1', (lowest_name,))
+            c.execute('INSERT INTO leaderboard (username, score) VALUES (?, ?)', (user, score))
+            db.commit()
 
 
 if __name__ == "__main__":  # false if this file imported as module
