@@ -29,7 +29,7 @@ c.execute(
     "CREATE TABLE IF NOT EXISTS users(username TEXT, password TEXT)")
 
 #check if leaderboard exists or not
-c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?", ('leaderboard',))
+c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?", ("leaderboard",))
 result = c.fetchone()
 
 c.execute(
@@ -37,27 +37,27 @@ c.execute(
 
 #leaderboard placeholders
 if result is None:
-    for populate in range(10):
+    for populate in range(7):
         c.execute(f"INSERT INTO {'leaderboard'} (username, score) VALUES (NULL, NULL)")
 
 db.commit()  # save changes
 #-------------------------DataBase-------------------------
 
 def render_template_with_username(template):
-    usernameStr = session.get('username', None)
+    usernameStr = session.get("username", None)
     print("username is " + str(usernameStr) + " in render_template_with_username")
     return render_template(template, username=usernameStr)
 
-@app.route('/',)
+@app.route("/",)
 def index():
-    return render_template_with_username('index.html')
+    return render_template_with_username("index.html")
 
-@app.route('/game', methods = ["GET", "POST"])
+@app.route("/game", methods = ["GET", "POST"])
 def game():
-    update_leaders('me', 500)
+    update_leaders("me", 500)
     c.execute("SELECT * FROM leaderboard ORDER BY score DESC")
     leaders=c.fetchall()
-    return render_template('game.html', leader=leaders)
+    return render_template("game.html", leader=leaders)
 
 #-------------------------ACCOUNTS-------------------------
 def check_username(username):
@@ -72,36 +72,36 @@ def insert_account(username, password):
               (username, password))
     db.commit()
 
-@app.route("/register", methods=['POST'])
+@app.route("/register", methods=["POST"])
 def register():
 
     # POST
-    if request.method == 'POST':
-        input_username = request.form['username']
-        input_password = request.form['password']
-        confirm_password = request.form['confirm_password']
+    if request.method == "POST":
+        input_username = request.form["username"]
+        input_password = request.form["password"]
+        confirm_password = request.form["confirm_password"]
 
         response = {
-            'error': '',
-            'success': ''
+            "error": "",
+            "success": ""
         }
         # if no registration info is inputted into the fields
-        if input_username.strip() == '' or input_password.strip() == '' or confirm_password.strip() == '':
+        if input_username.strip() == "" or input_password.strip() == "" or confirm_password.strip() == "":
             # return json response instead of rendering template
-            if input_username.strip() == '':
-                response['error'] = "Please enter a username. \n"
+            if input_username.strip() == "":
+                response["error"] = "Please enter a username. \n"
 
-            if input_password.strip() == '':
-                response['error'] += "Please enter a password. \n"
+            if input_password.strip() == "":
+                response["error"] += "Please enter a password. \n"
 
-            if confirm_password.strip() == '':
-                response['error'] += "Please confirm your password. \n"
+            if confirm_password.strip() == "":
+                response["error"] += "Please confirm your password. \n"
 
             if input_password.strip() != confirm_password.strip():
-                response['error'] += "Passwords do not match. \n"
+                response["error"] += "Passwords do not match. \n"
 
-            response['success'] = "false"
-            # return render_template_with_username('register.html', message=response['error'])
+            response["success"] = "false"
+            # return render_template_with_username("register.html", message=response["error"])
             # return home page with url params
             return redirect(f"/?error={response['error']}&modal=register")
 
@@ -112,8 +112,8 @@ def register():
             # c.execute("select username from accounts where username=?", var)\
 
             if check_username(input_username):
-                response['error'] = "username is already taken. Please select another username. \n"
-                response['success'] = "false"
+                response["error"] = "username is already taken. Please select another username. \n"
+                response["success"] = "false"
                 return redirect(f"/?error={response['error']}&modal=register")
 
             # if username is not taken
@@ -122,13 +122,13 @@ def register():
                 if input_password == confirm_password:
                     # insert into accounts table
                     insert_account(input_username, input_password)
-                    response['success'] = "true"
-                    session['username'] = input_username
+                    response["success"] = "true"
+                    session["username"] = input_username
                     return redirect(f"/?success=Successfully registered!&modal=register")
-                # if passwords don't match
+                # if passwords don"t match
                 else:
-                    response['error'] = "Passwords do not match. \n"
-                    response['success'] = "false"
+                    response["error"] = "Passwords do not match. \n"
+                    response["success"] = "false"
                     print("Passwords do not match")
                     return redirect(f"/?error={response['error']}&modal=register")
     else:
@@ -137,18 +137,18 @@ def register():
 
 # login process
 
-@app.route("/login", methods=['GET', 'POST'])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     # Already logged in
-    if 'username' in session:
+    if "username" in session:
         print("user is logged in as " +
-              session['username'] + " is already logged in. Redirecting to /")
+              session["username"] + " is already logged in. Redirecting to /")
         return redirect("/")
 
     # POST
-    if request.method == 'POST':
-        input_username = request.form['username']
-        input_password = request.form['password']
+    if request.method == "POST":
+        input_username = request.form["username"]
+        input_password = request.form["password"]
 
     # Searches accounts table for user-password combination
     c.execute("select username from users where username=? and password=?;",
@@ -157,19 +157,19 @@ def login():
     # login_check
     if c.fetchone():
         print("Login success!")
-        if request.method == 'GET':  # For 'get'
+        if request.method == "GET":  # For "get"
             # stores username in session
-            session['username'] = request.args['username']
+            session["username"] = request.args["username"]
 
-        if request.method == 'POST':  # For 'post'
+        if request.method == "POST":  # For "post"
             # stores username in session
-            session['username'] = request.form['username']
+            session["username"] = request.form["username"]
 
         return redirect("/")
 
     else:
         print("Login failed")
-        error_msg = ''
+        error_msg = ""
         username_check = "select username from users where username=?;"
         password_check = "select username from users where password=?;"
 
@@ -189,10 +189,10 @@ def login():
 # logout and redirect to login page
 
 
-@app.route("/logout", methods=['GET', 'POST'])
+@app.route("/logout", methods=["GET", "POST"])
 def logout():
-    # remove the username from the session if it's there
-    session.pop('username', None)
+    # remove the username from the session if it"s there
+    session.pop("username", None)
     print("user has logged out. Redirecting to /login")
     return redirect("/")
 
@@ -206,8 +206,9 @@ def update_leaders(user, score):
 
     #if placeholder just replace
     if(lowest_score==None):
-        c.execute('DELETE FROM leaderboard WHERE username = ? LIMIT 1', (lowest_name,))
-        c.execute('INSERT INTO leaderboard (username, score) VALUES (?, ?)', (user, score))
+        c.execute("DELETE FROM leaderboard WHERE username IS NULL LIMIT 1")
+        c.execute("INSERT INTO leaderboard (username, score) VALUES (?, ?)", (user, score))
+        db.commit()
         return
     #else check for lowest score
     else:
@@ -218,8 +219,8 @@ def update_leaders(user, score):
                 lowest_score = current_score
                 lowest_name = current_name
         if (score>lowest_score):
-            c.execute('DELETE FROM leaderboard WHERE username = ? LIMIT 1', (lowest_name,))
-            c.execute('INSERT INTO leaderboard (username, score) VALUES (?, ?)', (user, score))
+            c.execute("DELETE FROM leaderboard WHERE username = ? LIMIT 1", (lowest_name,))
+            c.execute("INSERT INTO leaderboard (username, score) VALUES (?, ?)", (user, score))
             db.commit()
 
 
