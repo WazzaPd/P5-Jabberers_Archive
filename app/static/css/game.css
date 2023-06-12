@@ -1,3 +1,12 @@
+body {
+  background-image: url("../assets/peakpx.jpg");
+  color: #fff;
+  font-family: 'Press Start 2P', cursive;
+}
+.board {
+  border: 20px solid white;
+}
+
 .center-screen {
     display: flex;
     justify-content: center;
@@ -42,8 +51,15 @@
     padding: 2.5rem 2rem;
   }
   
+.top {
+    font-family: 'Press Start 2P', cursive
+    font-size: 1.7rem;
+    color: red;
+    text-align: center;
+    margin-top: 5%
+  }
   h1 {
-    font-family: "Rubik", sans-serif;
+    font-family: 'Press Start 2P', cursive
     font-size: 1.7rem;
     color: #141a39;
     text-transform: uppercase;
