@@ -5,6 +5,7 @@ let mapHeight = 3000;
 const scaleRatioX = 0.5; //viewWidth / mapWidth;
 const scaleRatioY = 0.5; //viewHeight / mapHeight;
 var currentLevel = 1; //note current level
+var score = 0; //note current score
 
 let popup;
 let restartButton;
@@ -116,6 +117,24 @@ function create() {
 
     //setScrollFactor is used to make the label position absolute
     //setOrigin to create label from top left of container
+    scoreText = this.add.text(-175, -250, "Score", {
+        fontSize: "48px",
+        fill: "#FFFFFF",
+        stroke: "#A117F2",
+        strokeThickness: 3
+    }).setScrollFactor(0);
+    scoreText.setOrigin(0.5, 0);
+
+    var scoreNumber = this.add.text(-175, -200, score, {
+        fontSize: "48px",
+        fill: "#FFA500",
+        stroke: "#FF0000",
+        strokeThickness: 4
+    }).setScrollFactor(0);
+    scoreNumber.setOrigin(0.5, 0);
+
+    //setScrollFactor is used to make the label position absolute
+    //setOrigin to create label from top left of container
     levelText = this.add.text(675, -250, "Level", {
         fontSize: "48px",
         fill: "#FFFFFF",
@@ -167,6 +186,8 @@ function update() {
     }
 
     if (Phaser.Geom.Intersects.RectangleToRectangle(kirby.getBounds(), lava.getBounds())){
+        document.getElementById("score").innerHTML = score;
+        submitScore(score);
         loseGame();
     }
 }
@@ -240,6 +261,7 @@ function createIsland(x, y, width, height) {
 function winGame() {
     console.log("YOU FINALLY WON!");
     currentLevel++;
+    score = (currentLevel-1)*100;
     //levelText.setText("Score: ")
     console.log(currentLevel);
     if(currentLevel % 5 == 0){
@@ -273,4 +295,19 @@ function showPopup(){
 
 function hidePopup() {
     document.querySelector('.popup').style.display = 'none';
+}
+
+// Submits score to flask
+function submitScore(value) {
+    fetch('/score', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ my_score: value })
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log(data);  // Print the response from the Flask route
+    });
 }

@@ -17,6 +17,7 @@
         rel="stylesheet"
     />
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -53,7 +54,7 @@
     </div>
     <div class="popup">
         <h1> You Died! </h1>
-        <p> Random Game Message </p>
+        <p class="text-dark">Your Score: <span id="score" class="text-danger"></span></p>
         <button id="restartButton"><a href = /game> Restart </a></button>
         <button id="exitButton"><a href = /..> Exit Game </a></button>
     </div>

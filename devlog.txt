@@ -84,3 +84,10 @@ JosephW -- 2023-06-11 23:56
 - Created middleware and styled leaderboard
 - resized leaderboard
 - added logout
+
+--------------------------------------------------------------
+
+JosephW -- 2023-06-12 14:55
+
+- Implemented Score system
+    - Works with leaderboard

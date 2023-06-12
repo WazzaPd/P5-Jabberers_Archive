@@ -48,13 +48,21 @@ def render_template_with_username(template):
     print("username is " + str(usernameStr) + " in render_template_with_username")
     return render_template(template, username=usernameStr)
 
+@app.route("/score", methods=["POST"])
+def get_score():
+    data = request.get_json()
+    my_score = data['my_score']
+    user = session.get("username", None)  
+    #If logged in update score
+    if user:
+        update_leaders(user, my_score)
+
 @app.route("/",)
 def index():
     return render_template_with_username("index.html")
 
 @app.route("/game", methods = ["GET", "POST"])
 def game():
-    update_leaders("me", 500)
     c.execute("SELECT * FROM leaderboard ORDER BY score DESC")
     leaders=c.fetchall()
     return render_template("game.html", leader=leaders)
