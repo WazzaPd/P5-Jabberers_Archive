@@ -6,7 +6,7 @@
 # import sqlite3  # for database building
 import sqlite3
 
-from flask import Flask # facilitate flask webserving
+from flask import Flask, jsonify # facilitate flask webserving
 from flask import render_template  # facilitate jinja templating
 from flask import request  # facilitate form submission
 from flask import session  # facilitate user sessions\
@@ -56,8 +56,14 @@ def get_score():
     #If logged in update score
     if user:
         update_leaders(user, my_score)
+    
+    # Create a response JSON
+    response_data = {'message': 'Data processed successfully'}
+    
+    # Return a JSON response
+    return jsonify(response_data)
 
-@app.route("/",)
+@app.route("/")
 def index():
     return render_template_with_username("index.html")
 

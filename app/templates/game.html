@@ -54,8 +54,8 @@
     <div class="popup">
         <h1> You Died! </h1>
         <p class="text-dark">Your Score: <span id="score" class="text-danger"></span></p>
-        <button id="restartButton"><a href = "{{ url_for('/game') }}"> Restart </a></button>
-        <button id="exitButton"><a href ="{{ url_for('/') }}"> Exit Game </a></button>
+        <button id="restartButton"><a href = "{{ url_for('game') }}"> Restart </a></button>
+        <button id="exitButton"><a href ="{{ url_for('index') }}"> Exit Game </a></button>
     </div>
     
     <script src="static/js/game.js"></script>
