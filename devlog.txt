@@ -79,7 +79,8 @@ moved the rules
 
 --------------------------------------------------------------
 
-JosephW -- 2023-06-09 14:31
+JosephW -- 2023-06-11 23:56
 
 - Created middleware and styled leaderboard
 - resized leaderboard
+- added logout
