@@ -18,7 +18,7 @@ body {
 .scale-translate-down {
   -ms-transform: scale(0.5, 0.5); /* IE 9 */
   -webkit-transform: scale(0.5, 0.5); /* Safari */
-  transform: scale(0.5, 0.5) translateY(22rem);
+  transform: scale(0.75, 0.75) translateY(7rem);
   transform-origin: top left;
   overflow: hidden;
 }
@@ -52,14 +52,14 @@ body {
   }
   
 .top {
-    font-family: 'Press Start 2P', cursive
+    font-family: 'Press Start 2P', cursive;
     font-size: 1.7rem;
     color: red;
     text-align: center;
     margin-top: 5%
   }
   h1 {
-    font-family: 'Press Start 2P', cursive
+    font-family: 'Press Start 2P', cursive;
     font-size: 1.7rem;
     color: #141a39;
     text-transform: uppercase;

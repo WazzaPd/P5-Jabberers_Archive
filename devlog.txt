@@ -76,3 +76,10 @@ AahanM - 2023-06-11 20:47
 
 sTyling and bootstrappin for the game page.
 moved the rules
+
+--------------------------------------------------------------
+
+JosephW -- 2023-06-09 14:31
+
+- Created middleware and styled leaderboard
+- resized leaderboard
