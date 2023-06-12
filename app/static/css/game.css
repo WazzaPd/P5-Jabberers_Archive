@@ -3,8 +3,21 @@ body {
   color: #fff;
   font-family: 'Press Start 2P', cursive;
 }
+
 .board {
   border: 20px solid white;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid black;
+  z-index: 9999;
 }
 
 .center-screen {

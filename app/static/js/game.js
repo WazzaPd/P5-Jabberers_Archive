@@ -6,6 +6,10 @@ const scaleRatioX = 0.5; //viewWidth / mapWidth;
 const scaleRatioY = 0.5; //viewHeight / mapHeight;
 var currentLevel = 1; //note current level
 
+let popup;
+let restartButton;
+let exitButton;
+
 let islandsGroup; //group of islands
 
 //For positioning the goal
@@ -50,6 +54,8 @@ function preload() {
 }
 
 function create() {
+
+    hidePopup();
 
     //Create lava floor
     lava = this.add.sprite(mapWidth/2, mapHeight, "lava"); //this.sys.game.config.height-200, "lava");
@@ -237,7 +243,7 @@ function winGame() {
     //levelText.setText("Score: ")
     console.log(currentLevel);
     if(currentLevel % 5 == 0){
-        mapHeight = mapHeight * 2;
+        mapHeight *= currentLevel/5 + 1;
     } else {
         mapHeight = 3000;
     }
@@ -245,9 +251,26 @@ function winGame() {
 }
 
 function loseGame() {
+    //Defeat Screen Pop up
     console.log("You died. You suck!");
+    showPopup();
+
+    //Reset Level
     currentLevel = 1;
-    mapHeight = 3000;
+
+    //mapHeight = 3000;
     console.log(currentLevel);
     game.scene.start('scene');
+
+    showPopup();
+}
+
+function showPopup(){
+    console.log("showPopup calling")
+    document.querySelector('.popup').style.display = 'block';
+    console.log("showPopup called")
+}
+
+function hidePopup() {
+    document.querySelector('.popup').style.display = 'none';
 }
