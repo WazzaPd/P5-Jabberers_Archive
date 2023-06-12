@@ -7,7 +7,7 @@
 
 ### Project Description:
 
-  Jump King! The player controls a character (ball for now). This character is only able to move by jumping. The goal is to make it to the top and not fall into the lava at the bottom!
+  Jump King! The player controls a character (ball for now). The goal is to make it to the top and not fall into the lava at the bottom!
   
 ### API Key Cards:
 
