@@ -9,6 +9,7 @@ var currentLevel = 1; //note current level
 let popup;
 let restartButton;
 let exitButton;
+var allowMove;
 
 let islandsGroup; //group of islands
 
@@ -56,6 +57,7 @@ function preload() {
 function create() {
 
     hidePopup();
+    allowMove = true;
 
     //Create lava floor
     lava = this.add.sprite(mapWidth/2, mapHeight, "lava"); //this.sys.game.config.height-200, "lava");
@@ -144,18 +146,19 @@ function update() {
     kirby.setVelocityX(0);
 
     //Kirby MOVE
-    if (cursors.left.isDown){
-        kirby.setVelocityX(-400);
-    } else if (cursors.right.isDown){
-        kirby.setVelocityX(400);
-    }
-
-    if (cursors.up.isDown){
-        if (kirby.body.touching.down){
-            kirby.setVelocityY(-800);
+    if (allowMove){
+        if (cursors.left.isDown){
+            kirby.setVelocityX(-400);
+        } else if (cursors.right.isDown){
+            kirby.setVelocityX(400);
         }
-    } 
 
+        if (cursors.up.isDown){
+            if (kirby.body.touching.down){
+                kirby.setVelocityY(-800);
+            }
+        } 
+    }
 
     //Adjust camera and Level Label according to kirby's height
     this.cameras.main.scrollY = kirby.y - this.cameras.main.height/2;
@@ -253,7 +256,6 @@ function winGame() {
 function loseGame() {
     //Defeat Screen Pop up
     console.log("You died. You suck!");
-    showPopup();
 
     //Reset Level
     currentLevel = 1;
@@ -261,8 +263,9 @@ function loseGame() {
     //mapHeight = 3000;
     console.log(currentLevel);
     game.scene.start('scene');
-
+    allowMove = false;
     showPopup();
+
 }
 
 function showPopup(){
